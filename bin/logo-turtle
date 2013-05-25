@@ -1,0 +1,36 @@
+#!/usr/bin/env coffee
+
+https = require('https')
+https_options =
+  hostname: 'api.sprk.io'
+  port: 443
+  path: '/v1/devices/' + process.env.SPARK_LOGO_TURTLE_DEVICE_ID
+  method: 'POST'
+
+driveCar = (command) ->
+  req = https.request https_options
+  body = JSON.stringify({ message: command })
+  req.setHeader 'Content-Type', 'application/json'
+  req.setHeader 'Content-Length', body.length
+  req.write body
+  req.end()
+  req.on 'error', (e) ->
+    console.error(e)
+
+client = require('twitter-api').createClient()
+
+client.setAuth(
+  process.env.SPARK_TWITTER_CONSUMER_KEY,
+  process.env.SPARK_TWITTER_CONSUMER_SECRET,
+  process.env.SPARK_TWITTER_ACCESS_TOKEN,
+  process.env.SPARK_TWITTER_ACCESS_SECRET 
+)
+
+SparkLogo = require '../lib/spark-logo'
+parser = new SparkLogo.Parser
+
+client.stream 'statuses/filter', { track: 'sparkdevices.com/turtle' }, (json) ->
+  tweet = JSON.parse(json)
+  if tweet.text and tweet.user
+    console.log "#{tweet.user.screen_name}: #{tweet.text}"
+    driveCar parser.commands(tweet.text)

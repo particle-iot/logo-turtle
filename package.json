@@ -1,0 +1,22 @@
+{
+  "name": "logo-turtle",
+  "version": "0.0.0",
+  "description": "Control an RC car by tweeting Logo commands",
+  "main": "lib/logo-turtle.js",
+  "author": "Zachary Crockett <zachary@sparkdevices.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jasmine-node --coffee spec",
+    "start": "./bin/logo-turtle"
+  },
+  "dependencies": {
+    "coffee-script": "1.6.x",
+    "twitter-api": "1.0.x"
+  },
+  "devDependencies": {
+    "jasmine-node": "1.7.x"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}
