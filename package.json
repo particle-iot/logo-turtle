@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jasmine-node --coffee spec",
-    "start": "./bin/logo-turtle"
+    "start": "forever start -a -l logo-turtle.log -o log/out.log -e log/err.log -c coffee bin/logo-turtle",
+    "stop": "forever stop bin/logo-turtle"
   },
   "dependencies": {
     "coffee-script": "1.6.x",
